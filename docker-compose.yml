@@ -1,0 +1,28 @@
+# MAC Linux version. command: docker-compose up
+version: "3"
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_database:/var/lib/mysql80/data
+      - ./db/products-sql-dump.sql:/docker-entrypoint-initdb.d/0_init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql_rootpass
+      - MYSQL_DATABASE=my_shop
+      - MYSQL_USER=my_user
+      - MYSQL_PASSWORD=my_password
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    tty: true
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DB_DNS=https://my_user:my_password@mysql:3306/my_shop
+    depends_on:
+      - mysql

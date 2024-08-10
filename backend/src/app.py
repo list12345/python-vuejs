@@ -7,7 +7,7 @@ import os
 import time
 
 # wait db is up
-time.sleep(2)
+time.sleep(5)
 app = Flask(__name__)
 CORS(app)
 
